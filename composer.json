@@ -19,7 +19,7 @@
         "phpspec/phpspec": "~2.0"
     },
     "autoload": {
-        "psr-0": { "winzou\\Bundle\\StateMachineBundle": "" }
+        "psr-4": { "winzou\\Bundle\\StateMachineBundle\\": "" }
     },
     "autoload-dev": {
         "psr-4": { "spec\\": "spec/" }
