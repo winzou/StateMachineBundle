@@ -2,7 +2,7 @@
     "name": "winzou/state-machine-bundle",
     "type": "symfony-bundle",
     "description": "Bundle for the very lightweight yet powerful PHP state machine",
-    "keywords": ["bundle", "statemachine"],
+    "keywords": ["symfony", "bundle", "statemachine"],
     "license": "MIT",
     "authors": [
         {
