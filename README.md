@@ -12,8 +12,8 @@ Installation
 ### Installation (via composer)
 ```js
 {
-      "require": {
-        "winzou/state-machine-bundle": "dev-master"
+    "require": {
+        "winzou/state-machine-bundle": "~0.1"
     }
 }
 ```
