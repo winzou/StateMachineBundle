@@ -46,7 +46,7 @@ class winzouStateMachineExtension extends Extension
             $config['states'] = $this->parseStates($config['states']);
 
             if (isset($config['callbacks'])) {
-                $config['callbacks'] = $this->parseStates($config['callbacks']);
+                $config['callbacks'] = $this->parseCallbacks($config['callbacks']);
             }
         }
 

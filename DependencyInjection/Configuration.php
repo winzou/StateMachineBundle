@@ -54,6 +54,7 @@ class Configuration implements ConfigurationInterface
     {
         $configNode
             ->arrayNode('states')
+                ->useAttributeAsKey('name')
                 ->prototype('scalar')
             ->end()
         ;
@@ -100,6 +101,7 @@ class Configuration implements ConfigurationInterface
     {
         $callbacks
             ->arrayNode($type)
+                ->useAttributeAsKey('name')
                 ->prototype('array')
                     ->children()
                         ->variableNode('on')->end()
