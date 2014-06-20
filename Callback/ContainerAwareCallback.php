@@ -37,6 +37,7 @@ class ContainerAwareCallback extends Callback
         // Load the services only now (when the callback is actually called)
         if (
             is_array($this->callable)
+            && is_string($this->callable[0])
             && 0 === strpos($this->callable[0], '@')
             && $this->container->has($serviceId = substr($this->callable[0], 1))
         ) {
