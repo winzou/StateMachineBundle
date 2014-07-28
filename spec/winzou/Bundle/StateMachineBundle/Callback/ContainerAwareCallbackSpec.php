@@ -4,7 +4,6 @@ namespace spec\winzou\Bundle\StateMachineBundle\Callback;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use SM\Callback\CascadeTransitionCallback;
 use SM\Event\TransitionEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
