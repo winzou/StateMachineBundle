@@ -18,8 +18,7 @@ Installation
 }
 ```
 
-Register the bundle in `app/AppKernel.php`:
-
+### Register the bundle
 ```php
 // app/AppKernel.php
 public function registerBundles()
@@ -34,26 +33,30 @@ public function registerBundles()
 Usage
 -----
 
-### Configure the bundle
 
-In order to use this bundle, you first need to set the states for each entity you want to manage with the state machin, and the possible transitions between them. This is done in the `app/config/config.yml` file.
+### Configure a state machine graph
 
-So, let's imagine you have an *Article* entity, and you would like to use the state machine with it. Configure the bundle like the following:
+In order to use the state machine of this bundle, you first need to define a graph. A graph is a definition of states, transitions and optionnaly callbacks ; all attached on an object from your domain. Multiple graphes can be attached to the same object.
+
+Let's define a graph called *simple* for our `Article` object:
 
 ```yaml
 # app/config/config.yml
+
 winzou_state_machine:
     my_bundle_article:
-        class: My\AwesomeBundle\Entity\Article # the class you want to use with the state machine
-        property_path: state # the property from the entity that holds the state
-        graph: article # the name of the transition's graph
-        states: # you will define all possible states here
-            new: ~
-            pending_review: ~
-            awaiting_changes: ~
-            accepted: ~
-            published: ~
-            rejected: ~
+        class: My\Bundle\Entity\Article # class of your domain object
+        property_path: state            # property of your object holding the actual state (default is "state")
+        graph: simple                   # name of the graph (default is "default")
+        # list of all possible states:
+        states:
+            - new
+            - pending_review
+            - awaiting_changes
+            - accepted
+            - published
+            - rejected
+        # list of all possible transitions:
         transitions:
             create:
                 from: [new]
@@ -62,7 +65,7 @@ winzou_state_machine:
                 from: [pending_rewiew, accepted]
                 to: awaiting_changes
             submit_changes:
-                from: [awaiting_changes, approve, pending_review]
+                from: [awaiting_changes]
                 to: pending_review
             approve:
                 from: [pending_review, rejected]
@@ -70,75 +73,69 @@ winzou_state_machine:
             publish:
                 from: [accepted]
                 to: published
+        # list of all callbacks
+        callbacks:
+            # will be called before applying a transition
+            before:
+                update_reviewer:
+                    on:   'create'                         # call the callback on a specific transition
+                    do:   [@my.awesome.service, 'update']  # will call the method of this Symfony service
+                    args: ['object']                       # arguments for the callback
+            # will be called after applying a transition
+            after:
+                email_on_publish:
+                    on:   'publish'
+                    do:   [@my.awesome.service, 'sendEmail']
+                    args: ['object', '"Email title"']
 ```
 
-So, in the previous example, the entity *Article* has 6 possible states, and those can be achived by applying some transitions to the entity. For example, when creating a new Article, you would apply the 'create' transition to the entity, and after that the state of it would become *pending_review*. 
+So, in the previous example, the object `Article` has 6 possible states, and those can be achieved by applying some transitions to the entity. For example, when creating a new `Article`, you would apply the 'create' transition to the entity, and after that the state of it would become *pending_review*. 
 
-Let's imagine now that, after an exhaustive review, someone decides the Article was not good enough, so it would like to ask you for some changes. Therefore, they would apply the *ask_for_changes* transition, and now the state would be *awaiting_changes*.
+Let's imagine now that, after an exhaustive review, someone decides the `Article` was not good enough, so it would like to ask you for some changes. Therefore, they would apply the *ask_for_changes* transition, and now the state would be *awaiting_changes*.
 
 
-### Using the state machine from a controller
+### Using the state machine
 
-In order to apply the transitions from a Controller, you need to request for the `sm.factory` service. Once you have the SM factory, you need to get the transitions that are available for a given entity, under a give graph name. In our example, we have defined a grap called `article`, that will be applied to the *Article* entity. So, from a controller, we would do:
+#### Definitions
+
+The state machine is the object actually manipulating your object. By using the state machine you can test if a transition can be applied, actually apply a transition, retrieve the current state, etc. *A state machine is specific to a couple object + graph.* It means that if you want to manipulate another object, or the same object with another graph, *you need another state machine*.
+
+The factory helps you to get the state machine for these couples object + graph. You give an object and a graph name to it, and it will return you the state machine for this couple. The factory is a service named `sm.factory`.
+
+#### Usage
+
 
 ``` php
 
-    public function myAwesomeAction(Request $request)
-    {
-        $article = $this->getRepository('MyAwesomeBundle:Article')->find($request->get('id'));
-        $smFactory = $this->get('sm.factory');
-        $articleSM = $smFactory->get($article, 'article');
-    }
-```
-
-Now, the `$articleSM` has a bunch of methods that will allow us to check if the desired transitions are possible, given the state of the object we have passed to the factory (`$article` in our case). For example, we can:
-
-- Check the available transitions: `$articleSM->getPossibleTransitions();`
-- Get the actual state of the object: `$articleSM->getState();`
-- Check if a transition can be made: `$articleSM->can('transition_name');`
-- Apply a transition: `$articleSM->apply('transition_name');`
-
-
-### Using the state machine from a service
-
-You can also embbed the state machine as a dependecy in your services. Let's say you have an `ArticleListener` that listen on some Article events, and you would like to apply some transitions after the Article is updated (for example, you would like the state to be *pending_review*), you would define the listener in the following way:
-
-``` yaml
-services:
-     my_awesome_bundle.listener.article:
-        class: My\AwesomeBundle\EventListener\ArticleListener
-        tags:
-          - { name: kernel.event_listener, event: my_awesome_article_event.on_update, method: onUpdate }
-        arguments: [@sm.factory]
-```
-
-And after that, you would use the state machine in your listener:
-
-``` php
-<?php
-namespace My\AwesomeBundle\EventListener;
-
-use SM\Factory\Factory;
-use Symfony\Component\EventDispatcher\GenericEvent;
-
-class ArticleListener
+public function myAwesomeAction($id)
 {
-    private $transitionsFactory;
-
-    public function __construct(Factory $stateFactory)
-    {
-        $this->transitionsFactory = $stateFactory;
-    }
+    // Get your domain object
+    $article = $this->getRepository('MyAwesomeBundle:Article')->find($id);
     
-    public function onUpdate(GenericEvent $event)
-    {
-        $article = $event->getSubject();
-        $transitions = $this->transitionsFactory->get($article, 'article'); # notice that 'article' is the graph name
-        // we chack that we can apply the transition
-        if ($transitions->can('submit_changes')) {
-            // if transition is possible, we apply it
-            $transitions->apply('submit_changes');
-        }
-        // we need to flush the changes, you can do it here or back in your controller
-    }
+    // Get the factory
+    $factory = $this->get('sm.factory');
+    
+    // Get the state machine for this object, and graph called "simple"
+    $articleSM = $factory->get($article, 'simple');
 }
+```
+
+Now, the `$articleSM` has a bunch of methods that will allow you to check if the desired transitions are possible, given the state of the object we have passed to it (`$article` in our case). For example, we can:
+
+``` php
+// Check if a transition can be applied: returns true or false
+$articleSM->can('a_transition_name');
+
+// Apply a transition
+$articleSM->apply('a_transition_name');
+
+// Get the actual state of the object
+$articleSM->getState();
+
+// Get all available transitions
+$articleSM->getPossibleTransitions();
+```
+
+### Callbacks
+
+Callbaks are used to execute some code before or after applying transitions. This bundle adds the ability to use Symfony2 services in the callbacks.
