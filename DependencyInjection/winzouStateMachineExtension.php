@@ -68,6 +68,8 @@ class winzouStateMachineExtension extends Extension
                 $newStates[] = $key;
             } elseif (self::CFG_STATE_DISABLE !== $state) {
                 $newStates[] = $state;
+            } elseif (null !== $index = array_search($key, $newStates)) {
+                unset($newStates[$index]);
             }
         }
 
