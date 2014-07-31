@@ -40,7 +40,7 @@ class winzouStateMachineExtension extends Extension
      *
      * @return array
      */
-    protected function parseConfig(array $configs)
+    public function parseConfig(array $configs)
     {
         foreach ($configs as &$config) {
             $config['states'] = $this->parseStates($config['states']);
