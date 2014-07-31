@@ -84,11 +84,20 @@ class winzouStateMachineExtension extends Extension
     protected function parseCallbacks(array $callbacks)
     {
         foreach (array('before', 'after') as $position) {
+            // Remove disabled callbacks
             foreach ($callbacks[$position] as $i => $callback) {
                 if ($callback['disabled']) {
                     unset($callbacks[$position][$i]);
                 }
             }
+
+            // Order callbacks according to priority index
+            uasort($callbacks[$position], function($a, $b) {
+                if ($a['priority'] === $b['priority']) {
+                    return 0;
+                }
+                return $a['priority'] < $b['priority'] ? -1 : 1;
+            });
         }
 
         return $callbacks;

@@ -112,6 +112,7 @@ class Configuration implements ConfigurationInterface
                         ->variableNode('excluded_to')->end()
                         ->variableNode('do')->end()
                         ->scalarNode('disabled')->defaultValue(false)->end()
+                        ->scalarNode('priority')->defaultValue(0)->end()
                         ->arrayNode('args')
                             ->prototype('scalar')
                         ->end()
