@@ -25,7 +25,8 @@ class winzouStateMachineExtensionSpec extends ObjectBehavior
                 'callbacks' => array(
                     'before' => array(
                         'callback1' => array(
-                            'do' => 'dummy'
+                            'do' => 'dummy',
+                            'args' => array('arg1')
                         ),
                         'callback2' => array(
                             'do' => 'dummy',
@@ -58,6 +59,10 @@ class winzouStateMachineExtensionSpec extends ObjectBehavior
             'graph1' => array(
                 'callbacks' => array(
                     'before' => array(
+                        'callback1' => array(
+                            'do' => 'newDummy',
+                            'args' => array('arg2')
+                        ),
                         'callback4' => array(
                             'disabled' => true
                         )
@@ -82,7 +87,8 @@ class winzouStateMachineExtensionSpec extends ObjectBehavior
                         'priority' => -5,
                     ),
                     'callback1' => array(
-                        'do' => 'dummy'
+                        'do' => 'newDummy',
+                        'args' => array('arg2')
                     ),
                     'callback2' => array(
                         'do' => 'dummy',
