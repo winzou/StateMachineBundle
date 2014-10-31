@@ -10,12 +10,8 @@ Installation
 ---------------
 
 ### Installation (via composer)
-```js
-{
-    "require": {
-        "winzou/state-machine-bundle": "~0.1"
-    }
-}
+```sh
+composer require winzou/state-machine-bundle
 ```
 
 ### Register the bundle
