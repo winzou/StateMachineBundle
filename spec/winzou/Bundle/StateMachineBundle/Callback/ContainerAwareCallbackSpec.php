@@ -5,6 +5,7 @@ namespace spec\winzou\Bundle\StateMachineBundle\Callback;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use SM\Event\TransitionEvent;
+use SM\StateMachine\StateMachine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ContainerAwareCallbackSpec extends ObjectBehavior
@@ -43,5 +44,27 @@ class ContainerAwareCallbackSpec extends ObjectBehavior
         $service->dummy($event)->shouldBeCalled()->willReturn(true);
 
         $this->call($event)->shouldReturn(true);
+    }
+
+    function it_use_object_class_to_do_the_callback(
+        $container,
+        TransitionEvent $event,
+        StateMachine $sm
+    ) {
+        $object = new Dummy();
+        $this->beConstructedWith(array(), array('object', 'methodToBeCalled'), $container);
+
+        $event->getStateMachine()->willReturn($sm);
+        $sm->getObject()->willReturn($object);
+
+        $this->call($event)->shouldReturn(true);
+    }
+}
+
+class Dummy
+{
+    public function methodToBeCalled()
+    {
+        return true;
     }
 }

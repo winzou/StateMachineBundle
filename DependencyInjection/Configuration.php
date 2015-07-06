@@ -35,6 +35,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('class')->isRequired()->end()
             ->scalarNode('graph')->defaultValue('default')->end()
             ->scalarNode('property_path')->defaultValue('state')->end()
+            ->scalarNode('ignore_before_callback_result')->defaultValue(true)->end()
             ->scalarNode('state_machine_class')->defaultValue('SM\\StateMachine\\StateMachine')->end()
         ;
 
@@ -74,6 +75,7 @@ class Configuration implements ConfigurationInterface
                             ->prototype('scalar')->end()
                         ->end()
                         ->scalarNode('to')->end()
+                        ->scalarNode('on_fail')->defaultValue(false)->end()
                     ->end()
                 ->end()
             ->end()
