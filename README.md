@@ -58,7 +58,7 @@ winzou_state_machine:
                 from: [new]
                 to: pending_review
             ask_for_changes:
-                from: [pending_rewiew, accepted]
+                from: [pending_review, accepted]
                 to: awaiting_changes
             submit_changes:
                 from: [awaiting_changes]
