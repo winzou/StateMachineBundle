@@ -2,21 +2,60 @@
 
 namespace winzou\Bundle\StateMachineBundle\Command;
 
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\TableSeparator;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
-class winzouStateMachineDebugCommand extends AbstractCommand
+class winzouStateMachineDebugCommand extends ContainerAwareCommand
 {
+    /**
+     * @var array
+     */
+    protected $config;
+
     /**
      * {@inheritdoc}
      */
     public function configure()
     {
-        parent::configure();
+        $this->addArgument('key', InputArgument::REQUIRED, 'A state machine key');
 
         $this->setName('debug:winzou:state-machine');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->config = $this->getContainer()->getParameter('sm.configs');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function interact(InputInterface $input, OutputInterface $output)
+    {
+        if (null === $input->getArgument('key')) {
+            $helper = $this->getHelper('question');
+
+            $question = new ChoiceQuestion(
+                '<question>Which state machine would you like to know about?</question>',
+                array_keys($this->config),
+                0
+            );
+            $question->setErrorMessage('State Machine %s does not exists.');
+
+            $choice = $helper->ask($input, $output, $question);
+
+            $output->writeln('<info>You have just selected: '. $choice.'</info>');
+
+            $input->setArgument('key', $choice);
+        }
     }
 
     /**
@@ -69,11 +108,9 @@ class winzouStateMachineDebugCommand extends AbstractCommand
                     $table->addRow(new TableSeparator());
                 }
 
-                if ($previousTo == $transition['to']) {
-                    $table->addRow(array('', $from, ''));
-                } else {
-                    $table->addRow(array($name, $from, $transition['to']));
-                }
+                ($previousTo == $transition['to'])
+                    ? $table->addRow(array('', $from, ''))
+                    : $table->addRow(array($name, $from, $transition['to']));
 
                 $previousTo = $transition['to'];
             }
