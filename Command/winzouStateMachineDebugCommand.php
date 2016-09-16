@@ -100,20 +100,8 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
         $table = new Table($output);
         $table->setHeaders(array('Transition', 'FROM', 'TO'));
 
-        $previousTo = null;
         foreach ($transitions as $name => $transition) {
-            foreach ($transition['from'] as $from) {
-
-                if (!empty($previousTo && $previousTo != $transition['to'])) {
-                    $table->addRow(new TableSeparator());
-                }
-
-                ($previousTo == $transition['to'])
-                    ? $table->addRow(array('', $from, ''))
-                    : $table->addRow(array($name, $from, $transition['to']));
-
-                $previousTo = $transition['to'];
-            }
+            $table->addRow(array($name, implode("\n", $transition['from']), $transition['to']));
         }
 
         $table->render();
