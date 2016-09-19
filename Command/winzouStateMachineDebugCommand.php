@@ -33,6 +33,10 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->config = $this->getContainer()->getParameter('sm.configs');
+
+        if (empty($this->config)) {
+            throw new \RuntimeException('The is no state machines configured.');
+        }
     }
 
     /**
