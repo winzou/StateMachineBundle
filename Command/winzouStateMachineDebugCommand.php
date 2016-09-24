@@ -44,22 +44,27 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
-        if (null === $input->getArgument('key')) {
-            $helper = $this->getHelper('question');
-
-            $question = new ChoiceQuestion(
-                '<question>Which state machine would you like to know about?</question>',
-                array_keys($this->config),
-                0
-            );
-            $question->setErrorMessage('State Machine %s does not exists.');
-
-            $choice = $helper->ask($input, $output, $question);
-
-            $output->writeln('<info>You have just selected: '. $choice.'</info>');
-
-            $input->setArgument('key', $choice);
+        if (null !== $input->getArgument('key')) {
+            return;
         }
+
+        $choices = array_map(function ($name, $config) {
+            return $name . "\t(" . $config['class'] . ' - ' . $config['graph'] . ')';
+        }, array_keys($this->config), $this->config);
+
+        $question = new ChoiceQuestion(
+            '<question>Which state machine would you like to know about?</question>',
+            $choices,
+            0
+        );
+        $question->setErrorMessage('State Machine %s does not exists.');
+
+        $choice = $this->getHelper('question')->ask($input, $output, $question);
+        $choice = substr($choice, 0, strpos($choice, "\t"));
+
+        $output->writeln('<info>You have just selected: '. $choice.'</info>');
+
+        $input->setArgument('key', $choice);
     }
 
     /**
@@ -80,32 +85,40 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param $states
+     * @param array           $states
      * @param OutputInterface $output
      */
-    protected function printStates($states, OutputInterface $output)
+    protected function printStates(array $states, OutputInterface $output)
     {
         $table = new Table($output);
         $table->setHeaders(array('Configured States:'));
 
         foreach ($states as $state) {
-            $table->addRow([$state]);
+            $table->addRow(array($state));
         }
 
         $table->render();
     }
 
     /**
-     * @param $transitions
+     * @param array           $transitions
      * @param OutputInterface $output
      */
-    protected function printTransitions($transitions, OutputInterface $output)
+    protected function printTransitions(array $transitions, OutputInterface $output)
     {
         $table = new Table($output);
-        $table->setHeaders(array('Transition', 'FROM', 'TO'));
+        $table->setHeaders(array('Transition', 'From(s)', 'To'));
+
+        end($transitions);
+        $lastTransition = key($transitions);
+        reset($transitions);
 
         foreach ($transitions as $name => $transition) {
             $table->addRow(array($name, implode("\n", $transition['from']), $transition['to']));
+
+            if ($name !== $lastTransition) {
+                $table->addRow(new TableSeparator());
+            }
         }
 
         $table->render();
