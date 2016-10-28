@@ -87,6 +87,7 @@ class Configuration implements ConfigurationInterface
     {
         $callbacks = $configNode->arrayNode('callbacks')->children();
 
+        $this->addSubCallbackSection($callbacks, 'guard');
         $this->addSubCallbackSection($callbacks, 'before');
         $this->addSubCallbackSection($callbacks, 'after');
 

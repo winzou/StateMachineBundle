@@ -71,12 +71,18 @@ winzou_state_machine:
                 to: published
         # list of all callbacks
         callbacks:
+            # will be called when testing a transition
+            guard:
+                guard_on_submitting:
+                    on:   'submit_changes'                        # call the callback on a specific transition
+                    do:   [@my.awesome.service, 'isSubmittable']  # will call the method of this Symfony service
+                    args: ['object']                              # arguments for the callback
             # will be called before applying a transition
             before:
                 update_reviewer:
-                    on:   'create'                         # call the callback on a specific transition
-                    do:   [@my.awesome.service, 'update']  # will call the method of this Symfony service
-                    args: ['object']                       # arguments for the callback
+                    on:   'create'
+                    do:   [@my.awesome.service, 'update']
+                    args: ['object']
             # will be called after applying a transition
             after:
                 email_on_publish:
@@ -134,4 +140,4 @@ $articleSM->getPossibleTransitions();
 
 ### Callbacks
 
-Callbaks are used to execute some code before or after applying transitions. This bundle adds the ability to use Symfony2 services in the callbacks.
+Callbacks are used to guard transitions or execute some code before or after applying transitions. This bundle adds the ability to use Symfony2 services in the callbacks.
