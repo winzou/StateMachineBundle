@@ -41,7 +41,13 @@ class ContainerAwareCallback extends Callback
             && 0 === strpos($this->callable[0], '@')
             && $this->container->has($serviceId = substr($this->callable[0], 1))
         ) {
-            $this->callable[0] = $this->container->get($serviceId);
+            $service = $this->container->get($serviceId);
+
+            if (is_callable($service)) {
+                $this->callable = $service;
+            } else {
+                $this->callable[0] = $service;
+            }
         }
 
         return parent::call($event);
