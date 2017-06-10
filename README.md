@@ -32,7 +32,7 @@ Usage
 
 ### Configure a state machine graph
 
-In order to use the state machine of this bundle, you first need to define a graph. A graph is a definition of states, transitions and optionnaly callbacks ; all attached on an object from your domain. Multiple graphes can be attached to the same object.
+In order to use the state machine of this bundle, you first need to define a graph. A graph is a definition of states, transitions and optionally callbacks ; all attached on an object from your domain. Multiple graphs can be attached to the same object.
 
 Let's define a graph called *simple* for our `Article` object:
 
