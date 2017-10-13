@@ -82,6 +82,7 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
 
         $this->printStates($config['states'], $output);
         $this->printTransitions($config['transitions'], $output);
+        $this->printCallbacks($config['callbacks'], $output);
     }
 
     /**
@@ -122,5 +123,33 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
         }
 
         $table->render();
+    }
+
+    /**
+     * @param array           $allCallbacks
+     * @param OutputInterface $output
+     */
+    protected function printCallbacks(array $allCallbacks, OutputInterface $output)
+    {
+        foreach ($allCallbacks as $type => $callbacks) {
+            if ($type === 'before' || $type === 'after') {
+                $table = new Table($output);
+                $table->setHeaders(array(ucfirst($type) . ' Callback', 'On', 'Do', 'Args'));
+
+                end($callbacks);
+                $lastCallback = key($callbacks);
+                reset($callbacks);
+
+                foreach ($callbacks as $name => $callback) {
+                    $table->addRow(array($name, implode("\n", $callback['on']), implode("\n", $callback['do']), implode("\n", $callback['args'])));
+
+                    if ($name !== $lastCallback) {
+                        $table->addRow(new TableSeparator());
+                    }
+                }
+
+                $table->render();
+            }
+        }
     }
 }
