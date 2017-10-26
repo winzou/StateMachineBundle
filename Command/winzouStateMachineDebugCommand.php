@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * This file is part of the Lisem Project.
+ *
+ * Copyright (C) 2015-2017 Libre Informatique
+ *
+ * This file is licenced under the GNU GPL v3.
+ * For the full copyright and license information, please view the LICENSE.md
+ * file that was distributed with this source code.
+ */
+
 namespace winzou\Bundle\StateMachineBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -62,7 +72,7 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
         $choice = $this->getHelper('question')->ask($input, $output, $question);
         $choice = substr($choice, 0, strpos($choice, "\t"));
 
-        $output->writeln('<info>You have just selected: '. $choice.'</info>');
+        $output->writeln('<info>You have just selected: ' . $choice . '</info>');
 
         $input->setArgument('key', $choice);
     }
@@ -75,7 +85,7 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
         $key = $input->getArgument('key');
 
         if (!array_key_exists($key, $this->config)) {
-            throw new \RuntimeException("The provided state machine key is not configured.");
+            throw new \RuntimeException('The provided state machine key is not configured.');
         }
 
         $config = $this->config[$key];
@@ -132,24 +142,22 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
     protected function printCallbacks(array $allCallbacks, OutputInterface $output)
     {
         foreach ($allCallbacks as $type => $callbacks) {
-            if ($type === 'before' || $type === 'after') {
-                $table = new Table($output);
-                $table->setHeaders(array(ucfirst($type) . ' Callback', 'On', 'Do', 'Args'));
+            $table = new Table($output);
+            $table->setHeaders(array(ucfirst($type) . ' Callback', 'On', 'Do', 'Args'));
 
-                end($callbacks);
-                $lastCallback = key($callbacks);
-                reset($callbacks);
+            end($callbacks);
+            $lastCallback = key($callbacks);
+            reset($callbacks);
 
-                foreach ($callbacks as $name => $callback) {
-                    $table->addRow(array($name, implode("\n", $callback['on']), implode("\n", $callback['do']), implode("\n", $callback['args'])));
+            foreach ($callbacks as $name => $callback) {
+                $table->addRow(array($name, implode("\n", $callback['on']), implode("\n", $callback['do']), implode("\n", $callback['args'])));
 
-                    if ($name !== $lastCallback) {
-                        $table->addRow(new TableSeparator());
-                    }
+                if ($name !== $lastCallback) {
+                    $table->addRow(new TableSeparator());
                 }
-
-                $table->render();
             }
+
+            $table->render();
         }
     }
 }
