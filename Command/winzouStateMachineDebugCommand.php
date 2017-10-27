@@ -1,15 +1,5 @@
 <?php
 
-/*
- * This file is part of the Lisem Project.
- *
- * Copyright (C) 2015-2017 Libre Informatique
- *
- * This file is licenced under the GNU GPL v3.
- * For the full copyright and license information, please view the LICENSE.md
- * file that was distributed with this source code.
- */
-
 namespace winzou\Bundle\StateMachineBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -72,7 +62,7 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
         $choice = $this->getHelper('question')->ask($input, $output, $question);
         $choice = substr($choice, 0, strpos($choice, "\t"));
 
-        $output->writeln('<info>You have just selected: ' . $choice . '</info>');
+        $output->writeln('<info>You have just selected: '.$choice.'</info>');
 
         $input->setArgument('key', $choice);
     }
@@ -85,7 +75,7 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
         $key = $input->getArgument('key');
 
         if (!array_key_exists($key, $this->config)) {
-            throw new \RuntimeException('The provided state machine key is not configured.');
+            throw new \RuntimeException("The provided state machine key is not configured.");
         }
 
         $config = $this->config[$key];
