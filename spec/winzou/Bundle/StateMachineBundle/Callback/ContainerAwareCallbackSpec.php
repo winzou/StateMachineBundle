@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use SM\Event\TransitionEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 class ContainerAwareCallbackSpec extends ObjectBehavior
 {
@@ -23,12 +24,20 @@ class ContainerAwareCallbackSpec extends ObjectBehavior
     {
         $this->beConstructedWith(array(), array('@my_service', 'dummy'), $container);
 
-        $container->has('my_service')->shouldBeCalled()->willReturn(true);
         $container->get('my_service')->shouldBeCalled()->willReturn($service);
 
         $service->dummy($event)->shouldBeCalled()->willReturn(true);
 
         $this->call($event)->shouldReturn(true);
+    }
+
+    function it_throws_an_exception_when_relevant($container, TransitionEvent $event, ContainerAwareCallbackSpec $service)
+    {
+        $this->beConstructedWith(array(), array('@my_service', 'dummy'), $container);
+
+        $container->get('my_service')->shouldBeCalled()->willThrow('Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException');
+
+        $this->shouldThrow('Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException')->during('call', array($event));
     }
 
     function dummy()
