@@ -75,19 +75,19 @@ winzou_state_machine:
             guard:
                 guard_on_submitting:
                     on:   'submit_changes'                        # call the callback on a specific transition
-                    do:   [@my.awesome.service, 'isSubmittable']  # will call the method of this Symfony service
+                    do:   ['@my.awesome.service', 'isSubmittable']  # will call the method of this Symfony service
                     args: ['object']                              # arguments for the callback
             # will be called before applying a transition
             before:
                 update_reviewer:
                     on:   'create'
-                    do:   [@my.awesome.service, 'update']
+                    do:   ['@my.awesome.service', 'update']
                     args: ['object']
             # will be called after applying a transition
             after:
                 email_on_publish:
                     on:   'publish'
-                    do:   [@my.awesome.service, 'sendEmail']
+                    do:   ['@my.awesome.service', 'sendEmail']
                     args: ['object', '"Email title"']
 ```
 
