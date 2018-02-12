@@ -18,6 +18,7 @@ php:
 env:
    - SYMFONY_VERSION=~2.1
    - SYMFONY_VERSION=~3.0
+   - SYMFONY_VERSION=~4.0
 
 matrix:
   fast_finish: true
@@ -31,6 +32,20 @@ matrix:
       env: 'SYMFONY_VERSION=~3.0'
     - php: 5.4
       env: 'SYMFONY_VERSION=~3.0'
+    - php: 5.3
+      env: 'SYMFONY_VERSION=~4.0'
+    - php: 5.4
+      env: 'SYMFONY_VERSION=~4.0'
+    - php: 5.5
+      env: 'SYMFONY_VERSION=~4.0'
+    - php: 5.6
+      env: 'SYMFONY_VERSION=~4.0'
+    - php: 7.0
+      env: 'SYMFONY_VERSION=~4.0'
+    - php: hhvm
+      env: 'SYMFONY_VERSION=~4.0'
+    - php: hhvm
+      dist: xenial
 
 before_script:
     - composer self-update
