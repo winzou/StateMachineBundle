@@ -41,12 +41,15 @@ class ContainerAwareCallback extends Callback
                 $serviceId = substr($this->callable[0], 1);
             } else {
                 $serviceId = $this->callable[0];
+
+                // We allow static calls so no Exception thrown if callable is not a service
+                if (!$this->container->has($serviceId)) {
+                    return parent::call($event);
+                }
             }
 
             // Callback services have to be public
-            if ($this->container->has($serviceId)) {
-                $this->callable[0] = $this->container->get($serviceId);
-            }
+            $this->callable[0] = $this->container->get($serviceId);
         }
 
         return parent::call($event);
