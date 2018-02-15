@@ -1,0 +1,31 @@
+parameters:
+    sm.callback.class: "winzou\\Bundle\\StateMachineBundle\\Callback\\ContainerAwareCallback"
+
+services:
+    _defaults:
+        autowire:      true
+        autoconfigure: true
+        public:        false
+        bind:
+            $configs: "%sm.configs%"
+
+    # aliases for interfaces
+    SM\Factory\FactoryInterface:
+        alias: "SM\\Factory\\Factory"
+    SM\Callback\CallbackFactoryInterface:
+        alias: "winzou\\Bundle\\StateMachineBundle\\Callback\\ContainerAwareCallbackFactory"
+
+    # services from the lib
+    SM\Callback\CascadeTransitionCallback:
+        public: true
+    SM\Extension\Twig\SMExtension:
+    SM\Factory\Factory:
+
+    # services from the bundle itself
+    winzou\Bundle\StateMachineBundle\Callback\ContainerAwareCallbackFactory:
+        arguments:
+            $class: "%sm.callback.class%"
+
+    winzou\Bundle\StateMachineBundle\Command\:
+        resource: "../../Command/*"
+        tags: ["console.command"]

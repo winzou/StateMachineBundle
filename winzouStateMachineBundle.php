@@ -11,7 +11,6 @@
 
 namespace winzou\Bundle\StateMachineBundle;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class winzouStateMachineBundle extends Bundle

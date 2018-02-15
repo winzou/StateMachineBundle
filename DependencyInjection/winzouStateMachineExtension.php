@@ -29,8 +29,8 @@ class winzouStateMachineExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
         $container->setParameter('sm.configs', $this->parseConfig($config));
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.xml');
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.yml');
     }
 
     /**
