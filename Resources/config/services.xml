@@ -13,12 +13,12 @@
     </parameters>
 
     <services>
-        <service id="sm.factory" class="%sm.factory.class%">
+        <service id="sm.factory" class="%sm.factory.class%" public="true">
             <argument>%sm.configs%</argument>
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="sm.callback_factory" />
         </service>
-        <service id="sm.callback_factory" class="%sm.callback_factory.class%">
+        <service id="sm.callback_factory" class="%sm.callback_factory.class%" public="true">
             <argument>%sm.callback.class%</argument>
             <argument type="service" id="service_container" />
         </service>
@@ -26,7 +26,7 @@
             <argument type="service" id="sm.factory" />
             <tag name="twig.extension" />
         </service>
-        <service id="sm.callback.cascade_transition" class="%sm.callback.cascade_transition.class%">
+        <service id="sm.callback.cascade_transition" class="%sm.callback.cascade_transition.class%" public="true">
             <argument type="service" id="sm.factory" />
         </service>
     </services>
