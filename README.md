@@ -102,20 +102,17 @@ Let's imagine now that, after an exhaustive review, someone decides the `Article
 
 The state machine is the object actually manipulating your object. By using the state machine you can test if a transition can be applied, actually apply a transition, retrieve the current state, etc. *A state machine is specific to a couple object + graph.* It means that if you want to manipulate another object, or the same object with another graph, *you need another state machine*.
 
-The factory helps you to get the state machine for these couples object + graph. You give an object and a graph name to it, and it will return you the state machine for this couple. The factory is a service named `sm.factory`.
+The factory helps you to get the state machine for these couples object + graph. You give an object and a graph name to it, and it will return you the state machine for this couple. The factory is a service named `SM\Factory\Factory`.
 
 #### Usage
 
 
 ``` php
 
-public function myAwesomeAction($id)
+public function myAwesomeAction($id, \SM\Factory\Factory $factory)
 {
     // Get your domain object
     $article = $this->getRepository('MyAwesomeBundle:Article')->find($id);
-    
-    // Get the factory
-    $factory = $this->get('sm.factory');
     
     // Get the state machine for this object, and graph called "simple"
     $articleSM = $factory->get($article, 'simple');

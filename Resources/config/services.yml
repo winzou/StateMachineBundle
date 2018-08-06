@@ -6,8 +6,6 @@ services:
         autowire:      true
         autoconfigure: true
         public:        false
-        bind:
-            $configs: "%sm.configs%"
 
     # aliases for interfaces
     SM\Factory\FactoryInterface:
@@ -20,6 +18,8 @@ services:
         public: true
     SM\Extension\Twig\SMExtension:
     SM\Factory\Factory:
+        arguments:
+            $configs: "%sm.configs%"
 
     # services from the bundle itself
     winzou\Bundle\StateMachineBundle\Callback\ContainerAwareCallbackFactory:
