@@ -12,6 +12,8 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 
 class winzouStateMachineDebugCommand extends ContainerAwareCommand
 {
+    protected static $defaultName = 'debug:winzou:state-machine';
+
     /**
      * @var array
      */
@@ -22,9 +24,10 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
      */
     public function configure()
     {
-        $this->addArgument('key', InputArgument::REQUIRED, 'A state machine key');
-
-        $this->setName('debug:winzou:state-machine');
+        $this
+            ->setName(self::$defaultName) // BC with 2.7
+            ->addArgument('key', InputArgument::REQUIRED, 'A state machine key')
+        ;
     }
 
     /**
@@ -35,7 +38,7 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
         $this->config = $this->getContainer()->getParameter('sm.configs');
 
         if (empty($this->config)) {
-            throw new \RuntimeException('The is no state machines configured.');
+            throw new \RuntimeException('There is no state machine configured.');
         }
     }
 
@@ -82,7 +85,10 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
 
         $this->printStates($config['states'], $output);
         $this->printTransitions($config['transitions'], $output);
-        $this->printCallbacks($config['callbacks'], $output);
+
+        if (isset($config['callbacks'])) {
+            $this->printCallbacks($config['callbacks'], $output);
+        }
     }
 
     /**

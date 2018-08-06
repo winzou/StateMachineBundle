@@ -1,0 +1,5 @@
+{
+  "bundles": {
+    "winzou\\Bundle\\StateMachineBundle\\winzouStateMachineBundle": ["all"]
+  }
+}
