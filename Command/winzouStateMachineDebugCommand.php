@@ -146,7 +146,14 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
             reset($callbacks);
 
             foreach ($callbacks as $name => $callback) {
-                $table->addRow(array($name, implode("\n", $callback['on']), implode("\n", $callback['do']), implode("\n", $callback['args'])));
+                if (empty($callback['on'])) {
+                    $callbackOn = array('*');
+                } elseif(is_array($callback['on'])) {
+                    $callbackOn = $callback['on'];
+                } else {
+                    $callbackOn = array($callback['on']);
+                }
+                $table->addRow(array($name, implode("\n", $callbackOn), implode("\n", $callback['do']), implode("\n", $callback['args'])));
 
                 if ($name !== $lastCallback) {
                     $table->addRow(new TableSeparator());
