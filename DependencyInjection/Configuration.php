@@ -22,10 +22,15 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
+        if (\method_exists(TreeBuilder::class, 'getRootNode')) {
+            $treeBuilder = new TreeBuilder('winzou_state_machine');
+            $configNode = $treeBuilder->getRootNode();
+        } else {
+            $treeBuilder = new TreeBuilder();
+            $configNode = $treeBuilder->root('winzou_state_machine');
+        }
 
-        $configNode = $treeBuilder
-            ->root('winzou_state_machine')
+        $configNode = $configNode
             ->useAttributeAsKey('name')
             ->prototype('array')
             ->children()
