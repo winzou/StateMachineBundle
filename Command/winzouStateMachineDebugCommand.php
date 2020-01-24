@@ -2,7 +2,7 @@
 
 namespace winzou\Bundle\StateMachineBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
-class winzouStateMachineDebugCommand extends ContainerAwareCommand
+class winzouStateMachineDebugCommand extends Command
 {
     protected static $defaultName = 'debug:winzou:state-machine';
 
@@ -19,6 +19,13 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
      */
     protected $config;
 
+    public function __construct(array $configs, string $name = null)
+    {
+        parent::__construct($name);
+
+        $this->config = $configs;
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -35,8 +42,6 @@ class winzouStateMachineDebugCommand extends ContainerAwareCommand
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->config = $this->getContainer()->getParameter('sm.configs');
-
         if (empty($this->config)) {
             throw new \RuntimeException('There is no state machine configured.');
         }
