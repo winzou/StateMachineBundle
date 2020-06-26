@@ -38,6 +38,9 @@ matrix:
     - php: hhvm
       dist: xenial
 
+before_install:
+    - phpenv config-rm xdebug.ini || true
+
 before_script:
     - composer self-update
     - composer require symfony/framework-bundle:${SYMFONY_VERSION} --no-update --dev
