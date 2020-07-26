@@ -3,9 +3,7 @@
 namespace spec\winzou\Bundle\StateMachineBundle\DependencyInjection;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use winzou\Bundle\StateMachineBundle\DependencyInjection\Configuration;
 use winzou\Bundle\StateMachineBundle\DependencyInjection\winzouStateMachineExtension;
 
@@ -110,7 +108,7 @@ class winzouStateMachineExtensionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('winzou\Bundle\StateMachineBundle\DependencyInjection\winzouStateMachineExtension');
+        $this->shouldHaveType(winzouStateMachineExtension::class);
     }
 
     function it_parse_configs()

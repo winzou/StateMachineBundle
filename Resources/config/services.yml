@@ -26,6 +26,6 @@ services:
         arguments:
             $class: "%sm.callback.class%"
 
-    winzou\Bundle\StateMachineBundle\Command\:
-        resource: "../../Command/*"
-        tags: ["console.command"]
+    winzou\Bundle\StateMachineBundle\Command\winzouStateMachineDebugCommand:
+        arguments:
+            $config: "%sm.configs%"

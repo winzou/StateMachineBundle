@@ -6,28 +6,21 @@ dist: xenial
 language: php
 
 php:
-    - 5.6
-    - hhvm
-    - 7.0
     - 7.1
     - 7.2
 
 env:
-   - SYMFONY_VERSION=~2.1
-   - SYMFONY_VERSION=~3.0
    - SYMFONY_VERSION=~4.0
+   - SYMFONY_VERSION=~5.0
 
 matrix:
-  fast_finish: true
   allow_failures:
-    - php: 5.6
-      env: 'SYMFONY_VERSION=~4.0'
-    - php: 7.0
-      env: 'SYMFONY_VERSION=~4.0'
-    - php: hhvm
-      env: 'SYMFONY_VERSION=~4.0'
-    - php: hhvm
-      dist: xenial
+    - php: 7.1
+      env: 'SYMFONY_VERSION=~5.0'
+
+before_install:
+    - phpenv config-rm xdebug.ini || true
+    - echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 before_script:
     - composer self-update
