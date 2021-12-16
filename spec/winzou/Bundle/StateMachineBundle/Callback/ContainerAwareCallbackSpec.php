@@ -4,7 +4,7 @@ namespace spec\winzou\Bundle\StateMachineBundle\Callback;
 
 use PhpSpec\ObjectBehavior;
 use SM\Event\TransitionEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use winzou\Bundle\StateMachineBundle\Callback\ContainerAwareCallback;
 

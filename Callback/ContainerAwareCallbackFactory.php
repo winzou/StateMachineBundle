@@ -14,7 +14,7 @@ namespace winzou\Bundle\StateMachineBundle\Callback;
 use SM\SMException;
 use SM\Callback\CallbackFactory;
 use SM\Callback\CallbackInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class ContainerAwareCallbackFactory extends CallbackFactory
 {
