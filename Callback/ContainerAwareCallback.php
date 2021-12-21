@@ -13,7 +13,7 @@ namespace winzou\Bundle\StateMachineBundle\Callback;
 
 use SM\Callback\Callback;
 use SM\Event\TransitionEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class ContainerAwareCallback extends Callback
 {
