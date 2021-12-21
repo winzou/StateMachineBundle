@@ -12,6 +12,7 @@ services:
         alias: "SM\\Factory\\Factory"
     SM\Callback\CallbackFactoryInterface:
         alias: "winzou\\Bundle\\StateMachineBundle\\Callback\\ContainerAwareCallbackFactory"
+    Psr\Container\ContainerInterface: '@service_container'
 
     # services from the lib
     SM\Callback\CascadeTransitionCallback:
