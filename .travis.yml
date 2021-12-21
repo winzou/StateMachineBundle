@@ -15,6 +15,7 @@ php:
 env:
    - SYMFONY_VERSION=~4.0
    - SYMFONY_VERSION=~5.0
+   - SYMFONY_VERSION=~6.0
 
 matrix:
   allow_failures:
