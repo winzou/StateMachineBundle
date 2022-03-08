@@ -16,7 +16,7 @@
         "symfony/framework-bundle": "^4.3|^5.0|^6.0"
     },
     "require-dev": {
-        "phpspec/phpspec": "^5.0|^6.0|^7.0"
+        "sylius/phpspec": "^5.0|^6.0|^7.0"
     },
     "autoload": {
         "psr-4": { "winzou\\Bundle\\StateMachineBundle\\": "" }
