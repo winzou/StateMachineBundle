@@ -27,7 +27,7 @@ class winzouStateMachineDebugCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setDescription('Shows information about state machine states, transitions and callbacks.')
@@ -38,7 +38,7 @@ class winzouStateMachineDebugCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         if (empty($this->config)) {
             throw new \RuntimeException('There is no state machine configured.');
@@ -48,7 +48,7 @@ class winzouStateMachineDebugCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         if (null !== $input->getArgument('key')) {
             return;
@@ -76,7 +76,7 @@ class winzouStateMachineDebugCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $key = $input->getArgument('key');
 
