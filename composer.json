@@ -13,10 +13,10 @@
     "require": {
         "php":                      "^7.4|^8.0|^8.1",
         "winzou/state-machine":     "~0.4",
-        "symfony/framework-bundle": "^4.4|^5.4|^6.0"
+        "symfony/framework-bundle": "^4.4|^5.4|^6.0|^7.0"
     },
     "require-dev": {
-        "sylius/phpspec": "^5.0|^6.0|^7.0"
+        "phpspec/phpspec": "^5.0|^6.0|^7.0"
     },
     "autoload": {
         "psr-4": { "winzou\\Bundle\\StateMachineBundle\\": "" }
