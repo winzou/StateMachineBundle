@@ -31,6 +31,8 @@ class ContainerAwareCallback extends Callback
 
     /**
      * {@inheritDoc}
+     *
+     * @return mixed
      */
     public function call(TransitionEvent $event)
     {
