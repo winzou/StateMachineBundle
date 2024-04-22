@@ -76,7 +76,7 @@ class winzouStateMachineDebugCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $key = $input->getArgument('key');
 
