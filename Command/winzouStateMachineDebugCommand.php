@@ -2,6 +2,7 @@
 
 namespace winzou\Bundle\StateMachineBundle\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputArgument;
@@ -10,6 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
+#[AsCommand('debug:winzou:state-machine')]
 class winzouStateMachineDebugCommand extends Command
 {
     protected static $defaultName = 'debug:winzou:state-machine';
@@ -76,7 +78,7 @@ class winzouStateMachineDebugCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $key = $input->getArgument('key');
 
