@@ -60,6 +60,10 @@ jobs:
                     # Additional exclusions
                     - php: "7.4"
                       symfony: "^6.0"
+                    - php: "8.4"
+                      symfony: "~4.4"
+                    - php: "8.5"
+                      symfony: "~4.4"
 
         steps:
             -
