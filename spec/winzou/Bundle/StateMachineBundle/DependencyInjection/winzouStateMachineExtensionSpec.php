@@ -51,7 +51,16 @@ class winzouStateMachineExtensionSpec extends ObjectBehavior
                 'states' => array(
                     'state20'
                 )
-            )
+            ),
+            'graph3' => array(
+                'class'  => 'Dummy',
+                'states' => array(
+                    'state1',
+                    'index' => 'state2',
+                    'state3' => null,
+                    'state4' => winzouStateMachineExtension::CFG_STATE_DISABLE
+                ),
+            ),
         ),
         array(
             'graph1' => array(
@@ -66,6 +75,12 @@ class winzouStateMachineExtensionSpec extends ObjectBehavior
                         )
                     )
                 )
+            ),
+            'graph3' => array(
+                'class'  => 'Dummy',
+                'states' => array(
+                    'state1',
+                ),
             )
         )
     );
@@ -102,6 +117,12 @@ class winzouStateMachineExtensionSpec extends ObjectBehavior
             'class'  => 'Dummy',
             'states' => array(
                 'state20'
+            )
+        ),
+        'graph3' => array(
+            'class'  => 'Dummy',
+            'states' => array(
+                'state1'
             )
         )
     );
